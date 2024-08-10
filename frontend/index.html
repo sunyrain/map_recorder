@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>我的旅行地图</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div id="userForms">
+        <div>
+            <h2>注册</h2>
+            <form id="registerForm">
+                用户名: <input type="text" id="registerUsername" required>
+                密码: <input type="password" id="registerPassword" required>
+                <button type="submit">注册</button>
+            </form>
+        </div>
+        <div>
+            <h2>登录</h2>
+            <form id="loginForm">
+                用户名: <input type="text" id="loginUsername" required>
+                密码: <input type="password" id="loginPassword" required>
+                <button type="submit">登录</button>
+            </form>
+        </div>
+    </div>
+    <div id="map" style="width: 100%; height: 800px;"></div>
+    <div id="stats" style="position: absolute; top: 20px; right: 20px; background: rgba(255, 255, 255, 0.8); padding: 10px; z-index: 1000;">
+        已访问县区数: <span id="visited-count">0</span>
+    </div>
+    <div id="info" style="position: absolute; top: 50px; right: 20px; background: rgba(255, 255, 255, 0.8); padding: 10px; z-index: 1000; visibility: hidden;">
+        地区名: <span id="area-name">N/A</span>
+    </div>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
