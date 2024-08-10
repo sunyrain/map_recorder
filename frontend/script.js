@@ -9,7 +9,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 // 加载 GeoJSON 数据并添加交互功能
 var geojsonLayer;
-
+var currentUserId = null;
 fetch('china_counties.geojson')  // 确保文件路径正确
     .then(function(response) {
         return response.json();
@@ -56,6 +56,8 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
     })
     .then(function (response) {
         alert('登录成功！');
+        //输出用户id
+        currentUserId = response.data.user_id;
         console.log(response);
     })
     .catch(function (error) {
@@ -64,7 +66,12 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
     });
 });
 
-    
+  
+document.getElementById('saveVisits').addEventListener('submit', function(e) {
+    e.preventDefault();
+    saveVisits(currentUserId);
+});  
+
 // 定义点击事件的响应
 var visitedCount = 0; // 跟踪已访问的县级市数量
 function onEachFeature(feature, layer) {
@@ -120,5 +127,24 @@ function onEachFeature(feature, layer) {
             document.getElementById('visited-count').textContent = visitedCount; // 更新页面上的显示
         }
     });
+}
+
+async function saveVisits(userId) {
+    alert('保存访问记录, 用户id: ' + userId);
+    var features = geojsonLayer.getLayers();
+    for (let feature of features) {
+        var county_id = feature.feature.properties.GID_3;
+        var visited = feature.clicked ? 1 : 0;
+        try {
+            const response = await axios.post('http://localhost:3000/save-visit', {
+                user_id: userId,
+                county_id: county_id,
+                visited: visited
+            });
+            console.log(response);
+        } catch (error) {
+            console.error(error);
+        }
+    }
 }
 
